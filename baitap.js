@@ -1,9 +1,7 @@
 // phần 1 
+
 const rawComment = "   I love JAVASCRIPT!!! It's soooo COOL!!!   ";
-
-
 // xóa khoảng trắng dư ở đầu và cuối 
-
 const deleteTrim =  rawComment.trim()
 console.log(deleteTrim);
 
@@ -33,24 +31,15 @@ if (index !== -1) {
     cart.splice(index, 1)
 }
 console.log(cart);
-
+// sau khi xóa thêm 'grape' ngay sau apple
 const addgrape = cart.splice(-2,0,'grape')
 console.log('check ' ,cart);
-
-
-
-// sau khi xóa thêm 'grape' ngay sau apple
-
-
-
 
 // nếu mảng có hơn 4 món thì xóa món cuối cùng
 if (cart.length > 4 ) {
     cart.pop()
 }
 console.log(cart + cart.length);
-
-
 
 //phần 3
 const rawNames = "Alice,, Bob,   Charlie , ,David,";
@@ -59,7 +48,10 @@ const namesArray = rawNames.split(',');
 // xóa khoảng trắng thừa và các chuỗi rỗng
 const newRawNames = namesArray.map(name => name.trim()).filter(name => name !== '');
 console.log(newRawNames);
+// chuẩn hóa từng tên (viết hoa chữ cái đầu , các chữ sau viết thường)
 
+
+// nối lại thành các chuỗi 
 const joinRawnames = newRawNames.join('|')
 console.log(joinRawnames)
 
@@ -81,3 +73,10 @@ user2.skills.push("TS");
 user3.skills.push("React");
 
 console.log(user1, user2, user3);
+
+// giải thích 
+// vì user2 được gán bằng user1 nên khi thay đổi cả 2 sẽ bị thay đổi 
+// còn user3 nó chỉ là sao chép của user1 nên không bị ảnh hưởng
+
+
+
