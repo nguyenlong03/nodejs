@@ -57,10 +57,24 @@ console.log(joinRawnames)
 
 // phần 4 regex
 // tạo hàm 
-const validateUserInput = (input)=>{
-   
+const validateUserInput = (input) =>{
 
+    let regex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/
+    let phone = /^\d{10}$/
+    if (regex.test(input)) {
+        return 'Valid Email'
+        
+    }
+    else if (phone.test(input)){
+    return 'Valid Phone'
+    }
+    else{
+        return 'Invalid'
+    }
 }
+
+console.log(validateUserInput('nguyenlong682003.com'));
+
 
 // phần 4 Primitive vs Reference
 
