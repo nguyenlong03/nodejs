@@ -110,10 +110,17 @@ console.log(NewIndex);
 
 const arrayD = ['cam' , 'chuối', 'Bưởi']
 const indexChuoi = arrayD.indexOf('chuối')
+console.log("Xem vị trí của chuối trong mảng",indexChuoi);
+
 console.log(indexChuoi);
 if(indexChuoi!=-1){
     console.log('Chuối đã tồn tại');
     arrayD.splice(indexChuoi,1, "táo tầu")
-    
 }
 console.log(arrayD);
+
+
+
+
+
+

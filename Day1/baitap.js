@@ -94,3 +94,10 @@ console.log(user1, user2, user3);
 
 
 
+
+
+const arr = [1, 2, 3, 4];
+
+const [a, , c, d] = arr;
+
+console.log(a,c,d);
