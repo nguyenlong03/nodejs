@@ -7,6 +7,7 @@
 - todo app
 - middleware
 - express.json() middleware
+- Commit Convention
 
 ## 1. understand json
 
@@ -251,3 +252,12 @@ npm install --save pg pg-hstore # Postgres
 ```
 
 - Docs tại [https://sequelize.org/docs/v6/core-concepts/model-basics/] , database [https://www.postgresql.org/]
+
+## Commit Convention
+
+- feat: thêm tính năng
+- fix: sửa lỗi
+- refactor: tối ưu code
+- style: chỉnh UI
+- chore: cấu hình / phụ trợ
+- docs: tài liệu

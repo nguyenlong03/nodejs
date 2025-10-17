@@ -124,6 +124,119 @@ SELECT [tên_cột_1, tên_cột_2, ...]
 FROM [tên_bảng];
 ```
 
-## 4.2 where
+## 4.2 where (BETWEEN , AND , OR , IN , IS NULL , LIKE %)
 
-Giusp lọc dữ liệu theo điều kiện
+Giúp lọc dữ liệu theo điều kiện
+
+**Cấu trúc**
+
+```js
+SELECT [tên_cột_1, tên_cột_2, ...]
+FROM [tên_bảng] where [điều kiện]
+```
+
+## 4.3 ORDER BY (Xắp xếp)
+
+giúp sắp xếp kết quả của câu lệnh SELECT theo ý muốn , Lệnh này được dùng để phân loại dữ liệu theo thứ tự tăng hoặc giảm dần, dựa trên một hoặc nhiều cộ
+
+```JS
+SELECT cot
+FROM ten_bang
+[WHERE dieu_kien]
+[ORDER BY cot_1, cot_2,..., cot_N] [ASC | DESC];
+```
+
+## 4.4 LIMIT và OFFSET (Phân trang)
+
+- limit giúp giới hạn phân trang , offset giúp lấy phần tử bắt đầu từ limit
+  **Cấu trúc**
+
+```js
+SELECT column1, column2, ...
+FROM table_name
+WHERE conditions
+ORDER BY column
+LIMIT n OFFSET m;
+```
+
+## Các loại join
+
+### Inner join
+
+**Cấu trúc**
+
+```js
+SELECT <...>
+FROM <Bảng trái> INNERJOIN <bảng phải>
+ON <Điều kiện khớp nối (id)>
+[các  mệnh đề nếu có ví dụ where , order ... nếu có]
+```
+
+**chú ý** : INNER JOIN sẽ chỉ trả về những dòng dữ liệu có giá trị khớp nhau ở cả hai bảng trong điều kiện ON.
+
+### LEFT JOIN
+
+**Cấu trúc**
+
+```js
+SELECT <cột muốn lấy>
+FROM <bảng_trái> LEFT JOIN <bảng_phải>
+ON <điều kiện_khớp_nối>
+[WHERE <điều kiện_lọc nếu có>]
+[ORDER BY <cột_sắp_xếp>];
+```
+
+**còn lại RIGHT JOIN , FULL JOIN cũng giống cấu trúc trên chỉ thay tên**
+
+## 5. Min , max
+
+### Lấy giá trị nhỏ nhất và lớn nhất
+
+**Cú pháp**
+
+```js
+// lấy giá trị lớn nhất
+SELECT MAX<tên cột> FROM
+<tên bảng>
+WHERE <điều kiện đi kèm nếu có>
+
+```
+
+```js
+SELECT MIN(tên cột) FROM
+<tên bảng>
+WHERE <điều kiện đi kèm nếu có>
+```
+
+## 6.Các statement tính toán
+
+### như là đếm tổng số dòng (COUNT()) , tính tổng các giá trị (SUM()) , Tính trung bình (AVG()).
+
+**Cấu trúc**
+
+```js
+SELECT COUNT(<tên cột>) AS <tên cột muốn tạo>
+FROM <tên bảng>
+```
+
+## GROUP BY (hàm nhóm các dữ liệu)
+
+### thường được dùng với các hàm statement ở mục 6
+
+```js
+SELECT <các_cột_không_trùng_lặp>,
+       <hàm_tính_toán>(<cột>)
+FROM <tên_bảng>
+[WHERE <điều_kiện_lọc>]
+GROUP BY <các_cột_nhóm>
+[HAVING <điều_kiện_sau_nhóm>]
+[ORDER BY <cột_sắp_xếp>];
+
+```
+
+**chú ý**:
+
+- WHERE → lọc trước khi nhóm
+- GROUP BY → nhóm dữ liệu
+- HAVING → lọc sau khi nhóm
+- ORDER BY → sắp xếp kết quả cuối
