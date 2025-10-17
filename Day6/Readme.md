@@ -1,4 +1,4 @@
-# DAY 5
+# DAY 6
 
 ## Các nội dung cần học
 
@@ -109,3 +109,21 @@ export const getData = asyncMiddleware(async (req, res, next) => {
   res.status(200).json(todos);
 });
 ```
+
+# 4. Database
+
+## 4.1. Select
+
+SELECT dùng để lấy dữ liệu từ một hoặc nhiều bảng trong cơ sở dữ liệu.
+Đây là câu lệnh quan trọng nhất, chiếm 70% công việc khi làm SQL.
+
+**Cấu trúc**
+
+```js
+SELECT [tên_cột_1, tên_cột_2, ...]
+FROM [tên_bảng];
+```
+
+## 4.2 where
+
+Giusp lọc dữ liệu theo điều kiện
