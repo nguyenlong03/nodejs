@@ -240,3 +240,39 @@ GROUP BY <các_cột_nhóm>
 - GROUP BY → nhóm dữ liệu
 - HAVING → lọc sau khi nhóm
 - ORDER BY → sắp xếp kết quả cuối
+- thứ tự thực hiện câu lệnh sql:
+
+```js
+ SELECT
+    column_name(s),
+    aggregate_function()
+ - FROM
+    table_name
+ - JOIN
+    another_table ON ...
+ - WHERE
+    condition
+-  GROUP BY
+    column_name
+ - HAVING
+    condition_on_group
+ - ORDER BY
+    column_name
+ - LIMIT
+    n;
+
+
+# khi xóa dữ liệu dùng delete thì phải làm theo cách sau nếu ko muốn mất toàn bộ dữ liệu
+BEGIN;  -- bắt đầu transaction
+
+DELETE FROM users WHERE id = 3;
+
+-- Kiểm tra xem có xóa đúng không:
+SELECT * FROM users;
+
+ROLLBACK;  -- hoàn tác lại nếu sai
+-- hoặc nếu đúng thì dùng:
+COMMIT;    -- xác nhận thay đổi
+
+
+```

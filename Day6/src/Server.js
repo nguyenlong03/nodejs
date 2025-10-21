@@ -1,5 +1,5 @@
 import express from 'express';
-import router from './Router/router.js';
+import router from './Router/Router.js';
 import dotenv from 'dotenv';
 import {connectDB} from './config/connectDB.js';
 import { errorMiddleware } from './middleware/errorMiddleware.js';

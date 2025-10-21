@@ -1,5 +1,5 @@
 import express from 'express';
-import { getData , createData,updateData,deleteData } from '../Controllers/Crud.js';
+import { getData , createData,updateData,deleteData } from '../Controllers/crud.js';
 const router = express.Router();
 
 // crud Router

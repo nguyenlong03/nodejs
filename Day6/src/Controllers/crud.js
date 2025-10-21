@@ -7,7 +7,7 @@ import { asyncMiddleware } from '../middleware/asyncMiddleware .js';
 // lấy user
 export const getData = asyncMiddleware(async (req, res, next) => {
     const todos = await Todo.findAll();
-    throw new Error("Lỗi thử nè");
+    // throw new Error("Lỗi thử nè");
     res.status(200).json(todos);
 });
 
