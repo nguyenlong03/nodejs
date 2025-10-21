@@ -1,0 +1,26 @@
+{
+  "name": "learnexpress",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon src/Server.js",
+    "production": "cross-env NODE_ENV=production node src/Server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cross-env": "^10.1.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^7.0.9",
+    "nodemon": "^3.1.10",
+    "pg": "^8.16.3",
+    "sequelize": "^6.37.7",
+    "zod": "^4.1.12"
+  }
+}
