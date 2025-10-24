@@ -1,17 +1,19 @@
 import { Sequelize } from 'sequelize';
+import { config } from './envConfig';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
 
 const sequelize = new Sequelize(
-  process.env.DB_NAME as string,
-  process.env.DB_USER as string,
-  process.env.DB_PASSWORD as string,
+  config.DB_NAME,
+  config.DB_USER,
+  config.DB_PASSWORD,
   {
-    host: process.env.DB_HOST,
+    host: config.DB_HOST,
     dialect: "postgres",
-    port: Number(process.env.DB_PORT) || 5432,
+    port: Number(config.DB_PORT) || 5432,
+    logging: false, // nếu muốn bật log sql thì đặt thành true
   }
 );
 

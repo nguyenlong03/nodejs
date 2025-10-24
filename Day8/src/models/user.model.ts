@@ -4,30 +4,32 @@ import sequelize from "../config/connectDB";
 
 export interface UserAttributes {
   id: number;
-  username: string;
+  full_name: string;
   email: string;
   password: string;
   role?: string;
-  refresh_token?: string | null;
-  reset_token?: string | null;
+  phone?: string | null;
 }
+
 
 export type UserCreationAttributes = Optional<
   UserAttributes,
-  "id" | "role" | "refresh_token" | "reset_token"
+  "id" | "role" | "phone"
 >;
+
+
 export class User
   extends Model<UserAttributes, UserCreationAttributes>
   implements UserAttributes
 {
-  public id!: number;
-  public username!: string;
-  public email!: string;
-  public password!: string;
-  public role?: string;
-  public refresh_token?: string | null;
-  public reset_token?: string | null;
+  declare id: number;
+  declare full_name: string;
+  declare email: string;
+  declare password: string;
+  declare role?: string;
+  declare phone?: string | null;
 }
+
 
 User.init(
   {
@@ -36,15 +38,14 @@ User.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    username: {
+    full_name: {
       type: DataTypes.STRING,
-      unique: true,
       allowNull: false,
     },
     email: {
       type: DataTypes.STRING,
-      unique: true,
       allowNull: false,
+      unique: true,
     },
     password: {
       type: DataTypes.STRING,
@@ -54,11 +55,7 @@ User.init(
       type: DataTypes.STRING,
       defaultValue: "user",
     },
-    refresh_token: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    reset_token: {
+    phone: {
       type: DataTypes.STRING,
       allowNull: true,
     },
@@ -69,4 +66,5 @@ User.init(
     timestamps: false,
   }
 );
+
 export default User;

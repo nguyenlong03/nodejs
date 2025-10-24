@@ -144,3 +144,80 @@ export default [
 }
 
 ```
+
+# Typescript
+
+## 1. TypeScript là gì?
+
+**TypeScript** là ngôn ngữ lập trình mã nguồn mở do **Microsoft** phát triển, mở rộng từ **JavaScript**.  
+Nó bổ sung **kiểu dữ liệu tĩnh (static typing)**, **class**, **interface**, và nhiều tính năng hướng đối tượng, giúp phát triển dự án lớn dễ bảo trì hơn.
+
+### Các kiểu dữ liệu cơ bản
+
+```js
+let username: string = "Long";
+let age: number = 22;
+let isAdmin: boolean = true;
+let scores: number[] = [10, 9, 8];
+let anything: any = "Tự do";
+
+```
+
+### Kiểu nâng cao (Advanced Types)
+
+```js
+// Union Type
+let id: number | string;
+id = 123;
+id = "ABC";
+
+// Type Alias
+type UserID = number | string;
+let userId: UserID = 42;
+
+// Interface
+interface User {
+  id: number;
+  name: string;
+  email?: string; // tùy chọn
+}
+
+const user: User = { id: 1, name: "Long" };
+
+
+// Class
+class Person {
+  constructor(public name: string, private age: number) {}
+  greet() {
+    console.log(`Xin chào, tôi là ${this.name}`);
+  }
+}
+
+const p1 = new Person("Long", 22);
+p1.greet();
+
+
+
+//Generic (Kiểu tổng quát)
+function identity<T>(value: T): T {
+  return value;
+}
+
+console.log(identity<string>("Hello"));
+console.log(identity<number>(10));
+
+
+// Enum
+enum Role {
+  ADMIN,
+  USER,
+  GUEST,
+}
+
+let myRole: Role = Role.ADMIN;
+console.log(myRole); // 0
+
+```
+
+
+
