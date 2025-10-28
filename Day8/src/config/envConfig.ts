@@ -9,5 +9,7 @@ export const config ={
     DB_HOST: process.env.DB_HOST as string,
     DB_PORT: process.env.DB_PORT as string,
     PORT: process.env.PORT as string,
-    TOKEN: process.env.TOKEN as string
+    TOKEN: process.env.TOKEN as string,
+    NODE_ENV: process.env.NODE_ENV as string
+
 };

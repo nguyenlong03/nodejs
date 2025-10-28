@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { config } from "./config/envConfig";
 import { connectDB } from "./config/connectDB";
 import {errorHandler} from "./middleware/erroMiddleware"
+import cookieParser from "cookie-parser";
 dotenv.config({ path: ".env.development" });
 const app = Express();
 
@@ -11,7 +12,7 @@ const port = config.PORT || 4000;
 
 // Middleware to parse JSON bodies
 app.use(Express.json());
-
+app.use(cookieParser());
 app.use("/api", router);
 app.use(errorHandler)
 

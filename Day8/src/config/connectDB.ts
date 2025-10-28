@@ -16,7 +16,6 @@ const sequelize = new Sequelize(
     logging: false, // nếu muốn bật log sql thì đặt thành true
   }
 );
-
 export default sequelize;
 export const connectDB = async () => {
   try {

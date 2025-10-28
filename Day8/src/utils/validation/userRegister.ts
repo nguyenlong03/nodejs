@@ -6,8 +6,9 @@ export const registerUserSchema = z.object({
     email: z.string(),
     password: z.string(),
     confirmPassword: z.string(),
+    
 }).superRefine((data, ctx) => {
-    const { email, password, confirmPassword } = data;
+    const { email, password, confirmPassword  } = data;
 
     // validate email format
     validateEmail(email, ctx);

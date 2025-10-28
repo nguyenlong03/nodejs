@@ -88,12 +88,12 @@ export const login = async (req, res) => {
       message: "Đăng nhập thành công!",
       token,
       refreshToken,
-      user: {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        role: user.role,
-      },
+      // user: {
+      //   id: user.id,
+      //   username: user.username,
+      //   email: user.email,
+      //   role: user.role,
+      // },
     });
   } catch (error) {
     console.error("Lỗi đăng nhập:", error);
