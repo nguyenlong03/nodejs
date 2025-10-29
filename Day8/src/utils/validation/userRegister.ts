@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { string, z } from 'zod';
 import { validateEmail, validatePasswordMatch, validatePasswordStrength } from './baset';
 
 export const registerUserSchema = z.object({
@@ -6,6 +6,7 @@ export const registerUserSchema = z.object({
     email: z.string(),
     password: z.string(),
     confirmPassword: z.string(),
+    role: z.string()
     
 }).superRefine((data, ctx) => {
     const { email, password, confirmPassword  } = data;

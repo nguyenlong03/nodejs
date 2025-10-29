@@ -10,6 +10,6 @@ export const config ={
     DB_PORT: process.env.DB_PORT as string,
     PORT: process.env.PORT as string,
     TOKEN: process.env.TOKEN as string,
-    NODE_ENV: process.env.NODE_ENV as string
-
+    NODE_ENV: process.env.NODE_ENV as string,
+    REFRES_TOKEN: process.env.REFRES_TOKEN as string
 };

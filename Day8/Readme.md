@@ -215,9 +215,55 @@ enum Role {
 }
 
 let myRole: Role = Role.ADMIN;
-console.log(myRole); // 0
+console.log(myRole);
 
 ```
 
+# Authentication ( xác thực)
 
+### Authentication (xác thực) có nghĩa là xác nhận danh tính của riêng bạn, trong khi authorization (ủy quyền) có nghĩa là cấp quyền truy cập vào hệ thống. Nói một cách đơn giản, authentication là quá trình xác minh bạn là ai, trong khi authorization là quá trình xác minh những gì bạn có quyền truy cập.
 
+# Các status code
+
+## Mã code 200
+
+- 200 :request thành công sever trả về dữ liệu
+- 201 : tạo mới thành công : đăng ký , thêm sản phẩm
+- 202 : reques được chấp nhận và sử lý sau
+- 202 : thành công nhưng không có dữ liệu trả về
+
+## Mã code 400 lỗi phía client
+
+- 400 : bad Request : Request sai cú pháp hoặc gửi sai dữ liệu
+- 401 : Unauthorized : không có token trong header
+- 403 : Forbidden : đã đăng nhập nhưng không có quyền truy cập
+- 404 : not foud : không tìm thấy tài nguyên
+- 405 : Methot not allowsd : sai method
+- 409 : conflic : xung đột dữ liệu như email hoặc password đã tồn tại
+
+## Mã code 500 lỗi phía server
+
+- 500 : internal server erro : lỗi server không xác định
+- 503 : Service Unavailable : server quá tải
+
+# basic authen
+
+- là 1 phương thức để xác thực người dùng khi truy cập tài nguyên thông qua http(s)
+- Là phương thức xác thực đơn giản trong HTTP.
+- Client gửi username và password trong mỗi request.
+- Thông tin này được encode bằng Base64 và gửi trong header:
+
+# Cookie
+
+- Cookie là file nhỏ lưu trên trình duyệt (client).
+- Nó được server gửi về và được gửi lại trong các request tiếp theo.
+- Cookie có thể lưu thông tin nhỏ hoặc session ID để server biết client là ai.
+- Ví dụ: Set-Cookie: sessionID=abc123; HttpOnly
+- Cookie là một đoạn văn bản ghi thông tin được tạo ra và lưu trên trình duyệt của máy người dùng.
+
+# Session
+
+- Session là dữ liệu lưu trên server để nhớ trạng thái người dùng.
+- Mỗi client có 1 session riêng, server dùng session ID để xác định user.
+- Thường lưu thông tin như: userId, role, giỏ hàng…
+- Session giúp xác thực và quản lý quyền mà không phải lưu dữ liệu nhạy cảm trên client.
