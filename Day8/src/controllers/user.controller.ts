@@ -6,14 +6,13 @@ import jwt, { JwtPayload } from 'jsonwebtoken'
 import { config } from '../config/envConfig'
 import { loginInput } from '../utils/validation/userLogin'
 import { asyncMiddleware } from '../middleware/asyncMiddleware'
-import RefreshToken from '../models/refreshToken.model'
 
 export const getUser = async (req: Request, res: Response, next: NextFunction) => {
   res.status(200).json({ message: 'Hello backend' })
 }
 
 export const createUser = asyncMiddleware(async (req: Request, res: Response, next: NextFunction) => {
-  const { full_name, email, password, confirmPassword  } = req.body as RegisterUserInputs
+  const { full_name, email, password, confirmPassword } = req.body as RegisterUserInputs
   // kiểm tra user đã tồn tại
   const existingUser = await User.findOne({ where: { email } })
   if (existingUser) {
@@ -28,9 +27,7 @@ export const createUser = asyncMiddleware(async (req: Request, res: Response, ne
   await User.create({
     full_name,
     email,
-    password: hashPassword,
-    
-
+    password: hashPassword
   })
   // trả về response
   res.status(201).json({
@@ -65,24 +62,16 @@ export const loginUser = asyncMiddleware(async (req: Request, res: Response, nex
 
   const token = jwt.sign(payload, config.TOKEN, { expiresIn: '10m' })
 
-  const refreshToken = jwt.sign({ id: user.id }, config.REFRES_TOKEN, {
+  const refreshToken = jwt.sign({ id: user.id, role: user.role }, config.REFRES_TOKEN, {
     expiresIn: '7d'
   })
-
-  // Lưu vào DB
-  await RefreshToken.create({
-    token: refreshToken,
-    user_id: user.id,
-    expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7 ngày
-  })
-
-  res.cookie('refreshToken', refreshToken , { httpOnly: true })
+  res.cookie('refreshToken', refreshToken, { httpOnly: true })
 
   // trả về response thành công
   res.status(200).json({
     success: true,
     message: 'Login success',
-       token,
+    token,
     user: {
       id: user.id,
       email: user.email,
@@ -93,39 +82,27 @@ export const loginUser = asyncMiddleware(async (req: Request, res: Response, nex
 })
 
 // REFRESH TOKEN
-export const refreshToken = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const refreshToken = req.cookies.refreshToken;
-    if (!refreshToken) {
-      return res.status(401).json({ message: 'Refresh token missing' });
-    }
-    // Verify refresh token
-    const decoded: any = jwt.verify(refreshToken, config.REFRES_TOKEN);
-    // Check if token exists in DB
-    const storedToken = await RefreshToken.findOne({ where: { token: refreshToken } });
-    if (!storedToken) {
-      return res.status(401).json({ message: 'Invalid refresh token' });
-    }
-    // Generate new access token
-    const newAccessToken = jwt.sign({ id: decoded.id, role: decoded.role }, config.TOKEN, { expiresIn: '10m' });
-    res.status(200).json({
-      success: true,
-      token: newAccessToken,
-      expiresIn: '10m'
-    });
-  } catch (error) {
-    next(error);
-  } 
-}
-
-export const logoutUser = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    res.clearCookie('token', { httpOnly: true })
-    res.status(200).json({
-      success: true,
-      message: 'Logout successful'
-    })
-  } catch (error) {
-    next(error)
+export const refreshToken = asyncMiddleware(async (req: Request, res: Response, next: NextFunction) => {
+  const refreshToken = req.cookies.refreshToken
+  if (!refreshToken) {
+    return res.status(401).json({ message: 'Refresh token missing' })
   }
-}
+  // Verify refresh token
+  const decoded: any = jwt.verify(refreshToken, config.REFRES_TOKEN)
+
+  // Generate new access token
+  const newAccessToken = jwt.sign({ id: decoded.id, role: decoded.role }, config.TOKEN, { expiresIn: '10m' })
+  res.status(200).json({
+    success: true,
+    token: newAccessToken,
+    expiresIn: '10m'
+  })
+})
+
+export const logoutUser = asyncMiddleware(async (req: Request, res: Response, next: NextFunction) => {
+  res.clearCookie('refreshToken', { httpOnly: true })
+  res.status(200).json({
+    success: true,
+    message: 'Logout successful'
+  })
+})

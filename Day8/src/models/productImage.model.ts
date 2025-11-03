@@ -17,10 +17,10 @@ type ProductImageCreationAttributes = Optional<
 export class ProductImage
   extends Model<ProductAttributes, ProductImageCreationAttributes>
   implements ProductAttributes{
-    public id!: number;
-    public product_id!: number;
-    public url!: string;
-    public order!: number;
+    declare  id: number;
+    declare  product_id: number;
+    declare  url: string;
+    declare  order: number;
   }
 // khởi tạo model với các trường và kiểu dữ liệu tương ứng
 ProductImage.init(
@@ -49,6 +49,4 @@ ProductImage.init(
     timestamps: false
   }
 );
-
-Product.hasMany(ProductImage, { foreignKey: "product_id", as: "images" });
-ProductImage.belongsTo(Product, { foreignKey: "product_id", as: "product" });
+export default ProductImage;

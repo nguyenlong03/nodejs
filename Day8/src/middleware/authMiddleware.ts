@@ -45,13 +45,13 @@ export const checkAdmin = asyncMiddleware(
 
     // Nếu chưa login hoặc token invalid
     if (!user) {
-      res.status(401); // Unauthorized
+      res.status(401); 
       throw new Error("Not logged in or invalid token");
     }
 
     // Kiểm tra quyền admin
     if (user.role !== "admin") {
-      res.status(403); // Forbidden
+      res.status(403); 
       throw new Error("Access denied, only admin allowed");
     }
 

@@ -1,6 +1,7 @@
 import { DataTypes, Model, Optional } from 'sequelize'
 import sequelize from '../config/connectDB'
-import slugify from 'slugify'
+import { fa } from 'zod/locales'
+
 
 export interface ProductAttributes {
   id: number
@@ -11,16 +12,16 @@ export interface ProductAttributes {
   category_id: number
 }
 
-type ProductCreationAttributes = Optional<ProductAttributes, 'id' | 'description' | 'slug'>
+type ProductCreationAttributes = Optional<ProductAttributes, 'id' | 'description' >
 
 export class Product extends Model<ProductAttributes, ProductCreationAttributes>
   implements ProductAttributes {
-  public id!: number
-  public name!: string
-  public description?: string
-  public price!: number
-  public slug!: string
-  public category_id!: number
+  declare  id: number
+  declare  name: string
+  declare  description?: string
+  declare  price: number
+  declare  slug: string
+  declare  category_id: number
 }
 
 Product.init(
@@ -44,7 +45,7 @@ Product.init(
     },
     slug: {
       type: DataTypes.STRING,
-      allowNull: true // nếu DB có NOT NULL thì giữ nguyên, còn muốn tạm bỏ lỗi thì cho true
+      allowNull: false 
     },
     category_id: {
       type: DataTypes.INTEGER,

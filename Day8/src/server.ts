@@ -5,6 +5,7 @@ import { config } from "./config/envConfig";
 import { connectDB } from "./config/connectDB";
 import {errorHandler} from "./middleware/erroMiddleware"
 import cookieParser from "cookie-parser";
+import './models/associations.models'
 dotenv.config({ path: ".env.development" });
 const app = Express();
 
