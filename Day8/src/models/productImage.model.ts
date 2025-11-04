@@ -6,7 +6,7 @@ export interface ProductAttributes {
   id: number;
   product_id: number;
   url: string;
-  order: number;
+  order?: number;
 }
 // thiết lập các trường muốn bỏ qua khi tạo mới
 type ProductImageCreationAttributes = Optional<
@@ -40,7 +40,7 @@ ProductImage.init(
     },
     order: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true
     }
   },
   {

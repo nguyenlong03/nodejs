@@ -1,5 +1,5 @@
 import {  RefinementCtx } from 'zod'
-
+// addIssue thêm lỗi thủ công
 export const validateEmail = (email: string, ctx: RefinementCtx) => {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (!regex.test(email)) {
