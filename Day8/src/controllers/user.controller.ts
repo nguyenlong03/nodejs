@@ -1,11 +1,11 @@
 import { User } from '../models/user.model'
 import { NextFunction, Request, Response } from 'express'
 import bcrypt from 'bcrypt'
-import { RegisterUserInputs } from '../utils/validation/userRegister'
+import { RegisterUserInputs } from '../validation/userRegister'
 import jwt, { JwtPayload } from 'jsonwebtoken'
-import { config } from '../config/envConfig'
-import { loginInput } from '../utils/validation/userLogin'
-import { asyncMiddleware } from '../middleware/asyncMiddleware'
+import { config } from '../config/env.config'
+import { loginInput } from '..//validation/userLogin'
+import  asyncMiddleware  from '../middleware/asyncMiddleware'
 
 export const getUser = async (req: Request, res: Response, next: NextFunction) => {
   res.status(200).json({ message: 'Hello backend' })
@@ -36,7 +36,7 @@ export const createUser = asyncMiddleware(async (req: Request, res: Response, ne
   })
 })
 
-export const loginUser = asyncMiddleware(async (req: Request, res: Response, next: NextFunction) => {
+export const loginUser = async (req: Request, res: Response, next: NextFunction) => {
   // lấy thông tin đăng nhập từ request body
   const { email, password } = req.body as loginInput
 
@@ -79,10 +79,10 @@ export const loginUser = asyncMiddleware(async (req: Request, res: Response, nex
       expiresIn: '10m'
     }
   })
-})
+}
 
 // REFRESH TOKEN
-export const refreshToken = asyncMiddleware(async (req: Request, res: Response, next: NextFunction) => {
+export const refreshToken = async (req: Request, res: Response, next: NextFunction) => {
   const refreshToken = req.cookies.refreshToken
   if (!refreshToken) {
     return res.status(401).json({ message: 'Refresh token missing' })
@@ -97,12 +97,12 @@ export const refreshToken = asyncMiddleware(async (req: Request, res: Response, 
     token: newAccessToken,
     expiresIn: '10m'
   })
-})
+}
 
-export const logoutUser = asyncMiddleware(async (req: Request, res: Response, next: NextFunction) => {
+export const logoutUser = async (req: Request, res: Response, next: NextFunction) => {
   res.clearCookie('refreshToken', { httpOnly: true })
   res.status(200).json({
     success: true,
     message: 'Logout successful'
   })
-})
+}

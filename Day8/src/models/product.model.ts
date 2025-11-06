@@ -1,5 +1,5 @@
 import { DataTypes, Model, Optional } from 'sequelize'
-import sequelize from '../config/connectDB'
+import sequelize from '../config/app.config'
 import { fa } from 'zod/locales'
 
 

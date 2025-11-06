@@ -1,11 +1,12 @@
 import Express  from "express";
 import {  createUser , loginUser} from "../controllers/user.controller";
 import { validate } from "../middleware/validateMiddleware";
-import { registerUserSchema  } from "../utils/validation/userRegister"
-import { loginSchema } from "../utils/validation/userLogin";
+import { registerUserSchema  } from "../validation/userRegister"
+import { loginSchema } from "../validation/userLogin";
 import { logoutUser } from "../controllers/user.controller";
 import {getUser} from "../controllers/user.controller"
 import { refreshToken } from '../controllers/user.controller'
+
 
 
 const userRouter = Express.Router();

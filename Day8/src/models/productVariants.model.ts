@@ -1,4 +1,4 @@
-import sequelize from "../config/connectDB";
+import sequelize from "../config/app.config";
 import { DataType , DataTypes, Model , Optional } from "sequelize";
 import Product from "./product.model";
 

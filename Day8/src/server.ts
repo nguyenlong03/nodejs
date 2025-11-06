@@ -1,22 +1,19 @@
 import  Express  from "express";
 import router from "./routers/index";
 import dotenv from "dotenv";
-import { config } from "./config/envConfig";
-import { connectDB } from "./config/connectDB";
+import { config } from "./config/env.config";
+import { connectDB } from "./config/app.config";
 import {errorHandler} from "./middleware/erroMiddleware"
 import cookieParser from "cookie-parser";
 import './models/associations.models'
 dotenv.config({ path: ".env.development" });
 const app = Express();
-
 const port = config.PORT || 4000;
-
 // Middleware to parse JSON bodies
 app.use(Express.json());
 app.use(cookieParser());
 app.use("/api", router);
 app.use(errorHandler)
-
 const startServer = async () => {
   try {
     await connectDB(); 

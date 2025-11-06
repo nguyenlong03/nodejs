@@ -1,6 +1,6 @@
 import { ZodType, ZodError } from "zod";
 import { Request, Response, NextFunction } from "express";
-import { asyncMiddleware } from "../middleware/asyncMiddleware";
+import  asyncMiddleware from "../middleware/asyncMiddleware";
 
 interface ValidationSchemas {
   params?: ZodType<any, any>;

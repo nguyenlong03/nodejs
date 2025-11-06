@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
 import User from '../models/user.model'
 import jwt from 'jsonwebtoken'
-import { config } from '../config/envConfig'
-import { asyncMiddleware } from './asyncMiddleware'
+import { config } from '../config/env.config'
+import asyncMiddleware  from './asyncMiddleware'
 
 
 
@@ -58,4 +58,6 @@ export const checkAdmin = asyncMiddleware(
     next();
   }
 );
+
+
 

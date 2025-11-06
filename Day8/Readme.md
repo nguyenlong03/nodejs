@@ -267,3 +267,124 @@ console.log(myRole);
 - Mỗi client có 1 session riêng, server dùng session ID để xác định user.
 - Thường lưu thông tin như: userId, role, giỏ hàng…
 - Session giúp xác thực và quản lý quyền mà không phải lưu dữ liệu nhạy cảm trên client.
+
+```js
+select u.id , u.full_name , u.email
+from users u
+left join orders o on u.id = o.user_id
+where o.id isnull
+
+
+
+select
+date_trunc('month' , placed_at) as month,
+count(*) as soluong
+sum(total_amuont) as doanh thu
+from orders
+where placed_at >= now() - interval '6 month'
+group by month
+```
+
+## HTTPONLY , SAMESITE , SECURE , PATH
+
+1. HTTPONLY: nếu thuộc tính này = true => thì Cookie chỉ được gửi khi trình duyệt gửi request HTTP, chứ không đọc được bằng JS trên client. giúp ngăn chặn các cuộc tấn công xss
+
+- nếu mà thuộc tính này = false thì nó vẫn gửi kèm request bình thường nhưng js có thể truy cập dược cookie qua document.cooie dễ bị tấn công xss
+
+2. Samesite : Quy dịnh cookie có dược gửi di khi request dến từ 1 doman khác hay không ,Nó giúp ngăn cookie bị lạm dụng khi request đến từ domain khác (chống tấn công CSRF — Cross Site Request Forgery).
+   các giá trị của samesite gồm các giá trị sau
+
+- script : chỉ gửi dược cookie khi request cùng domain , nếu như khác domain thì sẽ không gửi dược
+  => dược dung khi chỉ muốn cookie hoạt động nội bộ trong 1 domain duy nhất,
+  ví dụ: bank.com muốn bảo mật tuyệt đối, không chấp nhận cross-site nào.
+
+- Lax : mặc dịnh hiện nay Gửi cookie trong một số trường hợp an toàn (ví dụ truy cập trực tiếp, form GET), nhưng không gửi trong iframe hoặc fetch cross-site.
+- none : Luôn gửi cookie, kể cả khi cross-site (frontend và backend khác domain hoặc port). Phải dùng secure: true kèm theo.
+
+trường hợp Nên dùng
+FE & BE cùng domain (hoặc cùng cổng) sameSite: "lax"
+FE & BE khác port (vd: 3000 – 4000) sameSite: "none"
+
+3. secure : khi mà cái này bằng true thì cookie chỉ được gửi qua https , nếu dùng với localhost (http) thì sẽ không gửi di dược
+   => khi nào dùng : khi mà ở môi trường localhost ta nên xét secure = false , còn ở môi trường server that thì sẽ thành true
+
+ví dụ ở server thật
+res.cookie("token", token, {
+sameSite: "none",
+secure: true, // bắt buộc nếu sameSite=none
+});
+
+4. path : với thằng này Quy định đường dẫn (URL path) mà cookie sẽ được gửi kèm.
+
+ví dụ : res.cookie("token", token, {
+path: "/api",
+});
+Trình duyệt chỉ gửi cookie này khi gọi API bắt đầu bằng /api.
+
+## Pool và Poolsize
+
+- pool giúp quản lý hiệu quả kết nối DB, còn poolSize (hay max) giới hạn số kết nối hoạt động cùng lúc để tránh “nghẽn” database.
+
+- pool là một nhóm các kết nối tới database mà Sequelize (hoặc ORM khác) tạo sẵn và tái sử dụng
+
+- thay vì mỗi lần request đến thì phải kết nối mới tới DB (rất tốn thời gian).
+
+## isolation transaction
+
+- Isolation level là mức kiểm soát cách các transaction ảnh hưởng lẫn nhau khi chúng chạy đồng thời trong cơ sở dữ liệu.( => Nếu 2 người cùng sửa/xem dữ liệu một lúc, thì database sẽ cho phép “nhìn thấy” bao nhiêu thay đổi của người kia?)
+- có 4 loại bao gồm
+  - Read uncommitted.
+  - Read committed.
+  - Repeatable read.
+  - Serializable.
+
+1. Read uncommitted(Đọc cả dữ liệu chưa commit):
+   - Transaction có thể nhìn thấy dữ liệu mà transaction khác chưa commit (tức là chưa lưu chính thức).Đây gọi là Dirty Read (đọc dữ liệu bẩn).
+
+- thường không được sử dụng
+
+```js
+Transaction.ISOLATION_LEVELS.READ_UNCOMMITTED
+```
+
+2. Read committed.
+
+- Đây là mức mặc định
+- chỉ đọc dữ liệu khi đã commit
+- Không đọc dữ liệu chưa commit → tránh Dirty Read.
+- Nhưng vẫn có thể gặp Non-repeatable Read (lúc đầu đọc 100, lát sau đọc lại thấy 200 do người khác commit giữa chừng).
+
+- nhược điểm :
+  - Không đảm bảo dữ liệu “ổn định” trong suốt transaction.
+
+  - Dễ gặp Non-repeatable Read hoặc Phantom Read.
+
+```js
+Transaction.ISOLATION_LEVELS.READ_COMMITTED
+// dùng khi CRUD đơn giản, không ảnh hưởng lớn
+```
+
+3. REPEATABLE READ( Đọc cố định)
+
+- Khi transaction bắt đầu, mọi SELECT sẽ nhìn thấy snapshot dữ liệu tại thời điểm bắt đầu.
+
+```js
+Transaction.ISOLATION_LEVELS.REPEATABLE_READ
+// dùng khi Thao tác đọc–ghi nhạy cảm (giá tiền, điểm số, tồn kho)
+```
+
+4.  SERIALIZABLE (an toàn nhất )
+
+- Coi như các transaction được thực thi lần lượt (tuần tự).
+
+- Database tự khóa hoặc tự hoãn các transaction khác để tránh mọi xung đột.
+
+- Nhược điểm:
+  - Hiệu năng thấp, dễ gặp lỗi SerializationError khi có nhiều người truy cập cùng lúc.
+
+  - Database phải rollback hoặc retry nhiều lần.
+
+```js
+Transaction.ISOLATION_LEVELS.SERIALIZABLE
+// dùng khi các hệ thống ngân hàng, tài chính, kế toán, nơi dữ liệu sai 1 đồng cũng không chấp nhận được.
+```

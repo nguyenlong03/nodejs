@@ -1,4 +1,4 @@
-import sequelize from "../config/connectDB";
+import sequelize from "../config/app.config";
 import { DataTypes, Model, Optional } from "sequelize";
 import Product from "./product.model";
 // tạo ra interface cho ProductImage
@@ -22,7 +22,7 @@ export class ProductImage
     declare  url: string;
     declare  order: number;
   }
-// khởi tạo model với các trường và kiểu dữ liệu tương ứng
+
 ProductImage.init(
   {
     id: {

@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize';
-import { config } from './envConfig';
+import { config } from './env.config';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -14,6 +14,12 @@ const sequelize = new Sequelize(
     dialect: "postgres",
     port: Number(config.DB_PORT) || 5432,
     logging: false, // nếu muốn bật log sql thì đặt thành true
+    pool : {
+      max : 5,
+      min : 0,
+      acquire : 30000,// chờ tối đa 30 giây để lấy connection
+      idle : 10000
+    }
   }
 );
 export default sequelize;
