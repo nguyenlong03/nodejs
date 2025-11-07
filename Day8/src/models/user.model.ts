@@ -14,7 +14,7 @@ export interface UserAttributes {
 
 export type UserCreationAttributes = Optional<
   UserAttributes,
-  "id" | "role" | "phone"
+  "id" | "role" 
 >;
 
 

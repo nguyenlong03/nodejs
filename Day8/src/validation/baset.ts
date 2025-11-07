@@ -1,4 +1,4 @@
-import {  RefinementCtx } from 'zod'
+import {  RefinementCtx, regex } from 'zod'
 // addIssue thêm lỗi thủ công
 export const validateEmail = (email: string, ctx: RefinementCtx) => {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -43,4 +43,15 @@ export const validtaLogin = (password:string  , ctx : RefinementCtx)=>{
             path : ["password"]
         })
   }
+}
+
+export const validatePhone =(phone : string , ctx:RefinementCtx)=>{
+  const strongPhone = /^(?:\+84|0)(?:3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5|8|9]|9[0-9])[0-9]{7}$/
+ if ( !strongPhone.test(phone)) {
+  ctx.addIssue({
+      code: 'custom',
+      message: 'Invalid phone number format. Must be a valid Vietnamese number!',
+      path: ['phone']
+    })
+ }
 }

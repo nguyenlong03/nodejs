@@ -1,15 +1,15 @@
 import { string, z } from 'zod';
-import { validateEmail, validatePasswordMatch, validatePasswordStrength } from './baset';
+import { validateEmail, validatePasswordMatch, validatePasswordStrength , validatePhone } from './baset';
 
 export const registerUserSchema = z.object({
     full_name: z.string().min(3, 'Name is required'),
     email: z.string(),
     password: z.string(),
     confirmPassword: z.string(),
-    role: z.string()
+    phone : z.string()
     
 }).superRefine((data, ctx) => {
-    const { email, password, confirmPassword  } = data;
+    const { email, password, confirmPassword , phone} = data;
 
     // validate email format
     validateEmail(email, ctx);
@@ -19,6 +19,10 @@ export const registerUserSchema = z.object({
 
     // validate password match
     validatePasswordMatch(password, confirmPassword, ctx);
+    
+    // validate phone 
+    validatePhone(phone,ctx)
+
 });
   
 

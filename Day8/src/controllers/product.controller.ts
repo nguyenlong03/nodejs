@@ -1,9 +1,5 @@
-import Product from '../models/product.model'
+
 import { NextFunction, Request, Response } from 'express'
-import ProductImage from '../models/productImage.model'
-import productsVarionts from '../models/productVariants.model'
-import sequelize from '../config/app.config'
-import { Transaction } from 'sequelize'
 import * as productServiecs from '../services/product.service'
 
 

@@ -1,6 +1,20 @@
 import * as productRepository from '../repositorys/product.repository';
 import sequelize from '../config/app.config';
-import {CreateProductInput} from '../repositorys/product.repository'
+
+
+
+ interface CreateProductInput {
+  name: string;
+  description: string;
+  price: number;
+  images?: string[];
+  variants?: any[];
+  category_id: number;
+  slug: string;
+
+} 
+
+
 export const productDetail = async(id: number) =>{
 const product = await productRepository.findOneProductdetail(id)
   if (!product) {
@@ -19,10 +33,32 @@ const offset = (page - 1) * limit;
   };
 }
 // create product
+
 export const creatProduct = async (data:CreateProductInput)=>{
 const t = await sequelize.transaction();
   try {
-    const product = await productRepository.creatproduct(data, t);
+    const { name, description, price, images, variants, category_id, slug } = data;
+    const product = await productRepository.createProduct({ name, description, price, category_id, slug },
+      t);
+
+    if (images?.length) {
+      const imageRecords = images.map(url => ({
+        product_id: product.id,
+        url,
+      }));
+      await productRepository.createImages(imageRecords, t);
+    }
+
+    if (variants?.length) {
+      const variantRecords = variants.map(item => ({
+        product_id: product.id,
+        sku: item.size,
+        option_name: item.color,
+        price: item.price,
+        stock: item.stock,
+      }));
+      await productRepository.createVariants(variantRecords, t);
+    }
     await t.commit();
     return product;
   } catch (error) {
@@ -34,18 +70,39 @@ const t = await sequelize.transaction();
 export const updateProduct = async (data :CreateProductInput , id:number)=>{
   const t = await sequelize.transaction()
   try {
-    const product = await productRepository.updateProduct(data ,id, t)
+    const { name, description, price, images, variants, category_id, slug } = data;
+    const product = await productRepository.updateProductData({name,description,price,category_id,slug} ,id, t)
+
+    if (images && Array.isArray(images)) {
+          await productRepository.deleteProductImages(id , t)
+          const newImages = images.map((url: string) => ({
+            product_id: +id,
+            url
+          }))
+          await productRepository.createImages(newImages,t)
+        }
+
+     if (variants && Array.isArray(variants)) {
+          await productRepository.deleteProductImages(id,t)
+          const variant = variants.map((item: any) => ({
+            product_id: +id,
+            sku: item.size,
+            option_name: item.color,
+            price: item.price,
+            stock: item.stock
+          }))
+          await productRepository.createVariants(variant,t)
+        }
     await t.commit()
     return product
   } catch (error) {
     await t.rollback()
-    console.log(error);
+    throw error
   }
 
 }
 // delete product
 export const deleteProduct = async(id : number)=>{
-const product = await productRepository.deleteProductById(id)
-  return product
+ return await productRepository.deleteProductById(id)
 }
 
