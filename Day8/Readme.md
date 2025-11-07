@@ -289,16 +289,18 @@ group by month
 
 1. HTTPONLY: nếu thuộc tính này = true => thì Cookie chỉ được gửi khi trình duyệt gửi request HTTP, chứ không đọc được bằng JS trên client. giúp ngăn chặn các cuộc tấn công xss
 
-- nếu mà thuộc tính này = false thì nó vẫn gửi kèm request bình thường nhưng js có thể truy cập dược cookie qua document.cooie dễ bị tấn công xss
+- nếu mà thuộc tính này = false thì nó vẫn gửi kèm request bình thường nhưng js có thể truy cập dược cookie qua document.cookie dễ bị tấn công xss
 
-2. Samesite : Quy dịnh cookie có dược gửi di khi request dến từ 1 doman khác hay không ,Nó giúp ngăn cookie bị lạm dụng khi request đến từ domain khác (chống tấn công CSRF — Cross Site Request Forgery).
-   các giá trị của samesite gồm các giá trị sau
+2. Samesite : thuộc tính bảo mật của cookie, giúp trình duyệt kiểm soát xem cookie có được gửi kèm khi yêu cầu đến từ một trang web khác hay không.
+
+   #### các giá trị của samesite gồm các giá trị sau
 
 - script : chỉ gửi dược cookie khi request cùng domain , nếu như khác domain thì sẽ không gửi dược
   => dược dung khi chỉ muốn cookie hoạt động nội bộ trong 1 domain duy nhất,
   ví dụ: bank.com muốn bảo mật tuyệt đối, không chấp nhận cross-site nào.
 
 - Lax : mặc dịnh hiện nay Gửi cookie trong một số trường hợp an toàn (ví dụ truy cập trực tiếp, form GET), nhưng không gửi trong iframe hoặc fetch cross-site.
+
 - none : Luôn gửi cookie, kể cả khi cross-site (frontend và backend khác domain hoặc port). Phải dùng secure: true kèm theo.
 
 trường hợp Nên dùng
@@ -329,7 +331,7 @@ Trình duyệt chỉ gửi cookie này khi gọi API bắt đầu bằng /api.
 
 - thay vì mỗi lần request đến thì phải kết nối mới tới DB (rất tốn thời gian).
 
-## isolation transaction
+## isolation transaction ( mức độ cô lập)
 
 - Isolation level là mức kiểm soát cách các transaction ảnh hưởng lẫn nhau khi chúng chạy đồng thời trong cơ sở dữ liệu.( => Nếu 2 người cùng sửa/xem dữ liệu một lúc, thì database sẽ cho phép “nhìn thấy” bao nhiêu thay đổi của người kia?)
 - có 4 loại bao gồm
@@ -371,6 +373,8 @@ Transaction.ISOLATION_LEVELS.READ_COMMITTED
 ```js
 Transaction.ISOLATION_LEVELS.REPEATABLE_READ
 // dùng khi Thao tác đọc–ghi nhạy cảm (giá tiền, điểm số, tồn kho)
+//Trong khi T1 đang chạy, T1 luôn thấy giá = 100.000, dù T2 đã cập nhật lên 150.000.
+//Chỉ khi T1 commit hoặc rollback, lần đọc tiếp theo mới thấy giá mới.
 ```
 
 4.  SERIALIZABLE (an toàn nhất )
@@ -388,3 +392,37 @@ Transaction.ISOLATION_LEVELS.REPEATABLE_READ
 Transaction.ISOLATION_LEVELS.SERIALIZABLE
 // dùng khi các hệ thống ngân hàng, tài chính, kế toán, nơi dữ liệu sai 1 đồng cũng không chấp nhận được.
 ```
+
+## OOP
+
+## OOP là viết tắt của Lập trình hướng đối tượng (Object-Oriented Programming), một mô hình lập trình dựa trên khái niệm về lớp và đối tượng. Mô hình này giúp tổ chức code theo hướng mô phỏng các đối tượng trong thế giới thực, mỗi đối tượng có cả thuộc tính (dữ liệu) và phương thức (hành vi). Ưu điểm chính của OOP là giúp mã nguồn dễ quản lý, tái sử dụng và mở rộng hơn, đặc biệt trong các dự án lớn.
+
+## Đối tượng trong OOP gòm 2 thành phần chính:
+
+- thuộc tính (Attribute): là những thông tin đặc điểm đối tượng
+- phương thức (Method): là những hành vi mà đối tượng có thể thực hiện
+
+## Mục tiêu
+
+- Giúp code rõ ràng, dễ mở rộng, dễ bảo trì bằng cách mô phỏng cách thế giới thật hoạt động.
+
+## OOP gồm 4 đặc tính cơ bản
+
+1. Tính đóng gói (Encapsulation)
+
+- Tính đóng gói cho phép che giấu thông tin và những tính chất xử lý bên trong của đối tượng. Các đối tượng khác đều không thể tác động trực tiếp đến dữ liệu bên trong và thay đổi trạng thái của các đối tượng mà bắt buộc phải thông qua các phương thức công khai do đối tượng đó cung cấp
+
+2. Tính kế thừa (Inheritance)
+
+- Đây là tính chất được sử dụng khá nhiều. Tính kế thừa cho phép xây dụng một lớp mới (lớp Con), kế thừa và tái sử dụng các thuộc tính phương thức dựa trên lớp cũ (lớp Cha) đã có trước đó.
+
+- Các lớp Con kế thừa toàn bộ thành phần của lớp Cha và không cần phải đinh nghĩa lại. Lớp có có thể mở rộng các thành phần kế thừa hoặc bổ sung những thanh phần mới
+
+3. Tính đa hình (Polymorphim)
+
+- Tính đa hình trong lập trình OOP cho phép các đối tượng khác nhau thực thi chức năng giống nhau theo những cách khác nhau.
+  - ví dụ : Ở lớp smartphone, mỗi một dòng máy đều kế thừa các thành phần của lớp cha nhưng Iphone chạy trên hệ điều hành IOS còn Samsung lại chạy trên hệ điều hành Androi
+
+4. Tính trừu tượng
+
+- Tính trừu tượng giúp loại bỏ những thứ phức tạp không cần thiết của đối tượng và chỉ tâp trung vào những thứ cốt lõi quan trọng
